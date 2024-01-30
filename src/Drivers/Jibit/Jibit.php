@@ -54,7 +54,12 @@ class Jibit extends Driver
      */
     public function purchase()
     {
-        $requestResult = $this->jibit->paymentRequest($this->invoice->getAmount(), $this->invoice->getUuid(), $this->invoice->getDetail('mobile'), $this->settings->callbackUrl);
+        $requestResult = $this->jibit->paymentRequest(
+            $this->invoice->getAmount() * ($this->settings->currency == 'T' ? 10 : 1), // Convert to Rial
+            $this->invoice->getUuid(),
+            $this->invoice->getDetail('mobile'),
+            $this->settings->callbackUrl
+        );
 
 
         if (! empty($requestResult['pspSwitchingUrl'])) {
